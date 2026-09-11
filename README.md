@@ -152,5 +152,5 @@ Normal-mode state is untouched. *Exit test mode* switches back.
 
 - `deliverables/01-artifact.md` — what the artifact is for, its inputs and outputs, the flow, where each constraint lives
 - `deliverables/02-process-log.md` — what was tried, what failed, what was learned, what three more hours would go to, with real skill and tool snippets
-- `deliverables/03-what-i-learned.md`
+- `deliverables/03-what-i-did-not-know.md`
 - `deliverables/04-what-i-would-not-ship.md`

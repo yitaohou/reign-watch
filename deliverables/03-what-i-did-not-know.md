@@ -1,4 +1,4 @@
-# What I learned
+# What I did not know when I started
 
 Three things I did not know when I opened the packet — one about the regulation, one about method, one about design. For each: the situation, the gap, how I closed it, and how far I can now go with it.
 
