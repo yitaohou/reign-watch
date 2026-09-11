@@ -1,0 +1,69 @@
+{
+  "icp_id": "icp-reign-2026-09",
+  "version": "1.0.0",
+  "_note": "Machine-readable form of reconciled-docs/icp.md. `invented: true` marks anything not traceable to a packet line; `source` names the line it came from.",
+  "gates": [
+    { "id": "regulated_enterprise",        "rule": "regulated enterprise",                                    "source": "CEO note" },
+    { "id": "employees_5k_plus",           "rule": "5,000+ employees",                                        "source": "Paul — Slack + CEO note" },
+    { "id": "agents_in_prod_or_imminent",  "rule": "agents in production, or about to be",                    "source": "Paul — Slack + CEO note" },
+    { "id": "has_risk_committee",          "rule": "has a risk committee; if not, do not book the briefing",  "source": "Rob — Slack, unvetted", "scope": "briefing" }
+  ],
+  "excluded": [
+    { "segment": "mid-market SaaS", "source": "CEO note" },
+    { "segment": "AI startups",     "source": "CEO note — 'Remove them'" }
+  ],
+  "segments": [
+    {
+      "id": "dsib",
+      "name": "D-SIB / capital markets",
+      "regulated_fs": true,
+      "example": "the Canadian bank on Forge",
+      "buyer": { "lanes": ["risk", "engineering"], "routing": "infer", "never_ask": true, "forward_target": "CAE", "source": "CEO note — route them without asking" },
+      "triggers": ["SR-26-2", "DORA"],
+      "open": ["OSFI as a trigger"],
+      "lead_with": "reign",
+      "status": "priority",
+      "precondition": { "rule": "no outbound until an Executive Assurance Briefing is booked", "unless": "trigger.type = regulatory", "source": "CEO note" },
+      "do_not_do": ["make them pick a lane", "generic 'AI governance' sequence to a CISO", "outbound before the briefing is on the calendar"]
+    },
+    {
+      "id": "biopharma",
+      "name": "Global biopharma quality / hospitals",
+      "regulated_fs": false,
+      "example": null,
+      "buyer": { "lanes": ["quality", "regulatory affairs"] },
+      "triggers": ["FDA-PCCP"],
+      "lead_with": "reign",
+      "lead_with_invented": true,
+      "lead_with_note": "Inference: PCCP is a regulatory trigger, so the assurance product is the natural lead. CEO note only says 'build the trigger'.",
+      "status": "in",
+      "do_not_do": ["thought-leadership blog", "spray hospitals this month"]
+    },
+    {
+      "id": "defense",
+      "name": "Defense supplier",
+      "regulated_fs": false,
+      "example": null,
+      "buyer": null,
+      "triggers": ["CMMC"],
+      "triggers_invented": true,
+      "lead_with": "forge",
+      "lead_with_invented": true,
+      "lead_with_note": "CEO's last sentence: lead with the substrate story, assurance as the reason agents can touch the estate. 'Forge = substrate' is our inference; packet never defines Forge. Confirm with Rob.",
+      "status": "in",
+      "do_not_do": ["lead with Reign"]
+    },
+    {
+      "id": "semiconductor",
+      "name": "Semiconductor",
+      "regulated_fs": false,
+      "example": "export control / foundry",
+      "buyer": null,
+      "triggers": [],
+      "lead_with": null,
+      "status": "conditional",
+      "condition": "only with a US export-control problem",
+      "source": "CEO note"
+    }
+  ]
+}

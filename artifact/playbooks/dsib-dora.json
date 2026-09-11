@@ -1,0 +1,27 @@
+{
+  "playbook_id": "reign-dsib-regulatory-brief",
+  "version": "1.0.0",
+  "product": "reign",
+  "audience": { "icp_id": "icp-reign-2026-09", "segment": "D-SIB / capital markets" },
+  "trigger": { "type": "regulatory", "id": "DORA" },
+  "channel": "briefing",
+  "approval": { "approver": "hum-005", "approved_at": null },
+  "kill_criteria": [
+    { "id": "audit_write_failed",  "when": "audit record could not be written",                                                        "action": "abort",      "scope": "fs_only" },
+    { "id": "channel_unknown",     "when": "channel = unknown, approver cannot be determined",                                           "action": "block_send" },
+    { "id": "approver_missing",    "when": "send = true and approver is empty",                                                          "action": "block_send" },
+    { "id": "source_stale",        "when": "a cited URL no longer resolves, or its content changed since fetched_at",                    "action": "block_send" },
+    { "id": "briefing_not_booked", "when": "segment = D-SIB and channel != briefing and no Executive Assurance Briefing on the calendar", "action": "block_send", "unless": "trigger.type = regulatory" },
+    { "id": "manual_kill",         "by": ["hum-001", "hum-002"],                                                                         "action": "abort" }
+  ],
+  "audit": {
+    "actor": "agt-brief-writer@0.1.0",
+    "principal": "hum-004",
+    "action": "create",
+    "object": "acct-dsib-001",
+    "purpose": "Draft a forwardable brief on DORA for the bank's CAE covering ICT third-party risk obligations that reach agents operating on the estate.",
+    "sources": [],
+    "send": false,
+    "approver": "hum-005"
+  }
+}

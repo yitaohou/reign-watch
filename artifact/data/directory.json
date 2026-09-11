@@ -1,0 +1,24 @@
+{
+  "_note": "Mock directory. Stand-in for HubSpot contacts / ZoomInfo. Paul is the only real name in the packet; Rob's surname is invented; everyone else is a placeholder.",
+  "humans": {
+    "hum-001": { "name": "Paul Goldman",   "role": "CEO",                         "can_kill": true },
+    "hum-002": { "name": "Dana Whitfield", "role": "CRO",                         "can_kill": true },
+    "hum-003": { "name": "Rob Tessier",    "role": "Head of Sales, Reign" },
+    "hum-004": { "name": "Priya Raman",    "role": "Compliance Lead",             "r17_principal": true },
+    "hum-005": { "name": "Marcus Obi",     "role": "AE, D-SIB account" },
+    "hum-006": { "name": "Yitao Hou",      "role": "Growth Engineer (operator)" }
+  },
+  "agents": {
+    "agt-enrich":        { "version": "0.1.0", "does": "Clay enrichment, ICP gating" },
+    "agt-trigger-watch": { "version": "0.1.0", "does": "watches SR 26-2 / DORA / FDA PCCP sources" },
+    "agt-brief-writer":  { "version": "0.1.0", "does": "drafts the account brief from a trigger" }
+  },
+  "prospects": {
+    "acct-dsib-001":   { "type": "account", "segment": "D-SIB / capital markets", "regulated_fs": true,  "label": "the Canadian bank on Forge", "known_facts": ["runs Forge in production", "has agents in production or about to"] },
+    "cont-dsib-001":   { "type": "contact", "account": "acct-dsib-001", "role": "Chief Audit Executive", "lane": "risk" },
+    "cont-dsib-002":   { "type": "contact", "account": "acct-dsib-001", "role": "Head of Platform Engineering", "lane": "engineering" },
+    "acct-pharma-001": { "type": "account", "segment": "Global biopharma quality", "regulated_fs": false, "label": "asked about FDA PCCP last week" },
+    "cont-pharma-001": { "type": "contact", "account": "acct-pharma-001", "role": "VP Quality / RA" },
+    "acct-def-001":    { "type": "account", "segment": "Defense supplier", "regulated_fs": false, "label": "Forge-first" }
+  }
+}

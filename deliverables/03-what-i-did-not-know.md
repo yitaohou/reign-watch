@@ -1,0 +1,5 @@
+# What I did not know when I started
+
+**Wiring a CRM into an agent over MCP.** I had never connected HubSpot to anything; the task was to make it the agent's system of record without letting the agent write to it. I built the table through the connector, allow-listed only its read tools beside my own MCP, and added a fixed screening order to the skill. One change now fans out to every account in the CRM with a reason per company — and I learned the cost the hard way: a quiet check tripled in price once 33 tool schemas started loading every run.
+
+**Testing a watcher when nothing changes.** The documents I watch had not changed and would not on my schedule, so detection could not be tested honestly. I found that the Wayback Machine's timemap and `id_` endpoints return every past capture as raw bytes, built those into baselines, and made a test mode that replays a change that really happened. It surfaced two changes I had already missed — a one-word fix to SR 26-2's attachment in May and a new SR letter in September — and proved the agent calls the first noise and the second irrelevant.

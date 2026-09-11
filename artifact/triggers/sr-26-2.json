@@ -1,0 +1,25 @@
+{
+  "_note": "Trigger event. What agt-trigger-watch would emit. Sources are the only text the brief may cite.",
+  "id": "SR-26-2",
+  "type": "regulatory",
+  "title": "Fed / FDIC / OCC \u2014 Revised Guidance on Model Risk Management",
+  "issued": "2026-04-17",
+  "sources": [
+    "https://www.federalreserve.gov/supervisionreg/srletters/SR2602.htm",
+    "https://www.federalreserve.gov/supervisionreg/srletters/SR2602a1.pdf"
+  ],
+  "watch_index": [
+    "https://www.federalreserve.gov/supervisionreg/srletters/2026.htm",
+    "https://www.federalreserve.gov/supervisionreg/srletters/srletters.htm"
+  ],
+  "applies_to": {
+    "segments": [
+      "D-SIB / capital markets",
+      "Regional bank"
+    ],
+    "requires": {
+      "reign_us_assets_over_30b": true
+    },
+    "note": "Fed/FDIC/OCC guidance; expected most relevant to banking organizations > $30B US total assets. Under $30B \u2192 not applicable unless the account has significant model-risk exposure."
+  }
+}

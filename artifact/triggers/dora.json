@@ -1,0 +1,24 @@
+{
+  "_note": "Trigger event. What agt-trigger-watch would emit. Sources are the only text the brief may cite.",
+  "id": "DORA",
+  "type": "regulatory",
+  "title": "Regulation (EU) 2022/2554 \u2014 Digital Operational Resilience Act",
+  "applies_from": "2025-01-17",
+  "sources": [
+    "https://eur-lex.europa.eu/eli/reg/2022/2554/oj/eng",
+    "https://www.eiopa.europa.eu/digital-operational-resilience-act-dora_en"
+  ],
+  "watch_index": [
+    "https://www.eiopa.europa.eu/digital-operational-resilience-act-dora_en"
+  ],
+  "applies_to": {
+    "segments": [
+      "D-SIB / capital markets",
+      "Regional bank"
+    ],
+    "requires": {
+      "reign_eu_entity": true
+    },
+    "note": "Regulation (EU) 2022/2554 binds EU-established financial entities and their ICT third-party providers."
+  }
+}
