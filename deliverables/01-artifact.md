@@ -9,11 +9,28 @@
 
 ![Flow](flow.svg)
 
-- **`regulatory-watch` skill** — runs one check cycle: diffs every watched page against its last snapshot, decides whether a change is material or noise, screens every company in the CRM in a fixed order with one reason each, and calls the brief skill once per affected account.
-- **`regulatory-brief` skill** — writes the brief for one account: three sections, every sentence cited to a page fetched this cycle, section 2 from that account's own CRM record phrased as a condition, one ask, under 250 words.
-- **Python** (`reign_tools.py`, `app.py`, `brief_eval.py`) — fetches, diffs and remembers; writes the R-17 record before any brief can render and refuses incomplete ones; runs the seven eval checks; schedules the agent and shows its progress. It never judges.
-- **HubSpot** — the system of record. Companies carry ten `reign_*` flags (segment, gates, applicability); the agent reads them through HubSpot's MCP connector, allow-listed to read-only tools, and writes nothing back.
-- **People** — the named approver opens the gate on a brief; the CEO or CRO can kill the motion. Nothing in the system sends.
+- **`regulatory-watch` skill — read · judge · screen**
+  - reads the diff of every watched page against its last snapshot
+  - judges whether a change is material or noise, and writes down why
+  - screens every company in the CRM in a fixed order, one reason each
+  - calls the brief skill once per affected account
+- **`regulatory-brief` skill — write**
+  - writes three sections: what changed, why it matters to this account, one ask
+  - cites every sentence to a page fetched this cycle
+  - phrases the account's CRM record as a condition, never as their fact
+  - keeps it under 250 words with no banned phrases
+- **Python — fetch · diff · record · block**
+  - fetches each page and caches its text
+  - diffs it against the last snapshot and stores the new one
+  - records every R-17 line, every changed diff, every check
+  - blocks a brief whose audit record failed or whose eval did not pass
+- **HubSpot — provide**
+  - holds the companies and their ten `reign_*` flags as the system of record
+  - exposes them to the agent through its MCP connector, read-only tools only
+  - receives nothing back
+- **People — approve · kill**
+  - the named approver opens the gate on one brief
+  - the CEO or CRO stops the whole motion
 
 ## Where the constraints live
 
