@@ -28,16 +28,19 @@
 
 ## With another three hours
 
-**High**
+### High
+
 - Brief credibility: an LLM-judge pass that checks each sentence against the source it cites; a rule that the *one ask* may only request an action inside the bank; a whitelist of what in `reign_known_facts` may appear in a brief.
 - Approver rule: must be a person flagged `can_approve`, never the operator running the agent.
 - `send_message`: an `@audited` tool that writes the R-17 `message` record, checks `approved_at` and consent, and in this environment writes an `.eml` to disk instead of sending.
 
-**Mid**
+### Mid
+
 - Noise review queue: a "disagree" action on a noise verdict that re-queues the check and keeps the old baseline.
 - New document → proposed trigger: when an index page shows a material new document, draft a trigger for a human to accept instead of writing a brief under the wrong playbook.
 
-**Low**
+### Low
+
 - Triggers for the other target industries: FDA PCCP (biopharma, non-FS path), CMMC (defense, monitor only), EU AI Act.
 - Company-level impact scoring: Clay enrichment of public company signals wired in through MCP during screening, each enrichment written as an R-17 `enrich` record, briefs ordered by score.
 
@@ -62,16 +65,24 @@
 **How the server starts the agent, from `artifact/server/app.py`.** Two tool classes in one run; the agent may read the CRM and may never write to it:
 
 ```python
-ALLOWED = ["mcp__reign-tools__diff_source", "mcp__reign-tools__fetch_source", "mcp__reign-tools__lookup",
-           "mcp__reign-tools__check_kill", "mcp__reign-tools__emit_brief", "mcp__reign-tools__write_audit", "Read",
-           # HubSpot is the system of record (CEO note). Read-only tools only; the agent never writes to the CRM.
-           "mcp__claude_ai_HubSpot__search_crm_objects", "mcp__claude_ai_HubSpot__get_crm_objects",
-           "mcp__claude_ai_HubSpot__query_crm_data", "mcp__claude_ai_HubSpot__get_properties",
-           "mcp__claude_ai_HubSpot__search_properties", "mcp__claude_ai_HubSpot__tool_guidance"]
+ALLOWED = [
+    # our own tools
+    "mcp__reign-tools__diff_source", "mcp__reign-tools__fetch_source",
+    "mcp__reign-tools__lookup",      "mcp__reign-tools__check_kill",
+    "mcp__reign-tools__emit_brief",  "mcp__reign-tools__write_audit",
+    "Read",
+    # HubSpot is the system of record (CEO note).
+    # Read-only tools only; the agent never writes to the CRM.
+    "mcp__claude_ai_HubSpot__search_crm_objects", "mcp__claude_ai_HubSpot__get_crm_objects",
+    "mcp__claude_ai_HubSpot__query_crm_data",     "mcp__claude_ai_HubSpot__get_properties",
+    "mcp__claude_ai_HubSpot__search_properties",  "mcp__claude_ai_HubSpot__tool_guidance",
+]
 
-cmd = [CLAUDE, "-p", build_prompt(t), "--output-format", "stream-json", "--verbose",
-       "--mcp-config", str(mcp_config_path()),   # reign-tools; the account-level HubSpot connector loads alongside
-       "--allowedTools", *ALLOWED, "--max-turns", "60"]
+cmd = [CLAUDE, "-p", build_prompt(t),
+       "--output-format", "stream-json", "--verbose",
+       "--mcp-config", str(mcp_config_path()),   # reign-tools; the HubSpot connector loads alongside
+       "--allowedTools", *ALLOWED,
+       "--max-turns", "60"]
 env = {**os.environ, "REIGN_RUNS_DIR": str(P().RUNS)}   # normal vs test state tree
 ```
 

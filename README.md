@@ -1,7 +1,7 @@
 # Reign Watch
 
-**Repository:** https://github.com/yitaohou/reign-watch
-**Walkthrough (4 min):** https://www.loom.com/share/cfc7f9603f80419fa43589335b37c07a
+- **Repository:** https://github.com/yitaohou/reign-watch
+- **Walkthrough (4 min):** https://www.loom.com/share/cfc7f9603f80419fa43589335b37c07a
 
 A regulatory-trigger agent for the Reign first motion. It watches public regulatory sources, judges whether a change matters, screens the accounts in HubSpot that the change reaches, and drafts one sourced account brief per affected account — with an R-17 audit record written before anything else happens and a named human between the brief and any send.
 
