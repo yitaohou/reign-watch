@@ -7,55 +7,13 @@
 
 ## Flow
 
-```
-scheduler tick / "Check now"
-  |
-  v   claude -p  ·  skill: regulatory-watch
-  |   tools: reign-tools MCP  +  HubSpot MCP (read-only)
-  |
-  +-- checking    diff_source() per URL
-  |               fetch -> extract text or links -> hash -> compare to last snapshot
-  |               -> changed?  added/removed lines · new links · first_seen
-  |
-  +-- judging     the agent reads the diff
-  |     all first_seen ......... baseline      snapshot stored, nothing drafted
-  |     nothing changed ........ no_change
-  |     not material ........... noise         reason + raw diff kept; no action
-  |     material ............... continue
-  |
-  +-- screening   companies from HubSpot, each one in this order:
-  |               CEO exclusion -> segment not reached -> fails an ICP gate
-  |               -> fails the regulation's flag -> otherwise AFFECTED
-  |               one reason per company; a `score` record per affected FS account
-  |
-  +-- writing     emit_brief() once per affected account
-                  write_audit (create)   fails closed: no record, no brief
-                  render                 section 1 shared · section 2 from that
-                                         account's record · one ask
-                  brief_eval (7 checks)  citations · <=250 words · banned phrases
-                                         · source hashes · audit precedes brief
-                                         · send=false · one ask
-                  handoff.json           only on PASS
-  |
-  v
-dashboard       live phase while running -> result when done
-                -> briefs wait for the named approver
-```
+![Flow](flow.svg)
 
-### Who does what
-
-| Part | Responsibility |
-|---|---|
-| **Server** (`server/app.py`) | Decides *when* a check runs and for which regulation; starts the agent as a headless `claude -p`; reads its event stream to show the live phase; records each cycle; serves the dashboard and the approval / kill API. Makes no judgment. |
-| **Tools** (`mcp/reign_tools.py`) | The only code that touches the outside or the disk: fetch a page, diff it against the last snapshot, look up a person or account, write an R-17 record, evaluate kill criteria, turn a brief into a file. `write_audit` refuses incomplete records; `emit_brief` cannot render before the record exists. |
-| **Watch skill** (`skill/regulatory-watch`) | The agent's procedure for one cycle: which URLs to diff, how to classify the cycle, the materiality test, the screening order, when to call the brief skill, the JSON it must end with. |
-| **Brief skill** (`skill/regulatory-brief`) | The writing rules: three sections, every sentence cited to a fetched source, the account's CRM record only and phrased as a condition, one ask, no banned phrases, 250 words. |
-| **Eval** (`eval/brief_eval.py`) | Seven mechanical checks run inside `emit_brief`; a failing brief is renamed `.FAILED.html` and gets no hand-off. |
-| **HubSpot** | System of record. Companies and their `reign_*` flags are read during screening; the agent never writes to it. |
-| **Dashboard** (`server/dashboard.html`) | Regulations → Checks → one Check → Brief; Audit page; who you are acting as; Approve (named approver only); Kill (CEO / CRO only); test mode. |
-| **Named humans** (`data/directory.json`) | Approve a brief; kill the motion. Nothing else in the system can do either. |
-
-Python fetches, diffs, records and blocks. The agent reads, judges, screens and writes. A person approves or kills.
+- **`regulatory-watch` skill** — runs one check cycle: diffs every watched page against its last snapshot, decides whether a change is material or noise, screens every company in the CRM in a fixed order with one reason each, and calls the brief skill once per affected account.
+- **`regulatory-brief` skill** — writes the brief for one account: three sections, every sentence cited to a page fetched this cycle, section 2 from that account's own CRM record phrased as a condition, one ask, under 250 words.
+- **Python** (`reign_tools.py`, `app.py`, `brief_eval.py`) — fetches, diffs and remembers; writes the R-17 record before any brief can render and refuses incomplete ones; runs the seven eval checks; schedules the agent and shows its progress. It never judges.
+- **HubSpot** — the system of record. Companies carry ten `reign_*` flags (segment, gates, applicability); the agent reads them through HubSpot's MCP connector, allow-listed to read-only tools, and writes nothing back.
+- **People** — the named approver opens the gate on a brief; the CEO or CRO can kill the motion. Nothing in the system sends.
 
 ## Where the constraints live
 

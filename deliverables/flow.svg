@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 600" width="860" height="600" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="12.5">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#5B6470"/>
+    </marker>
+    <style>
+      .box { fill: #FFFFFF; stroke: #B9C1CB; stroke-width: 1.2; rx: 6; }
+      .stage { fill: #F4F6F8; stroke: #B9C1CB; stroke-width: 1; rx: 5; }
+      .ext { fill: #FFFFFF; stroke: #B9C1CB; stroke-width: 1.2; stroke-dasharray: 4 3; rx: 6; }
+      .agent { fill: #E3EEF3; stroke: #1F5F7A; stroke-width: 1.4; rx: 8; }
+      .h { font-weight: 600; fill: #171B22; }
+      .t { fill: #171B22; }
+      .m { fill: #5B6470; font-size: 11px; }
+      .k { fill: #1F5F7A; font-weight: 600; font-size: 11px; letter-spacing: .06em; }
+      .ok { fill: #2E7D4F; font-weight: 600; }
+      .warn { fill: #B3721B; font-weight: 600; }
+      .line { stroke: #5B6470; stroke-width: 1.3; fill: none; marker-end: url(#a); }
+      .thin { stroke: #B9C1CB; stroke-width: 1.1; fill: none; marker-end: url(#a); }
+    </style>
+  </defs>
+
+  <!-- trigger -->
+  <rect class="box" x="300" y="16" width="260" height="42"/>
+  <text x="430" y="34" text-anchor="middle" class="h">Server tick  ·  or  “Check now”</text>
+  <text x="430" y="50" text-anchor="middle" class="m">server/app.py starts one headless agent run</text>
+  <path class="line" d="M430 58 V86"/>
+
+  <!-- agent container -->
+  <rect class="agent" x="60" y="86" width="740" height="330"/>
+  <text x="76" y="106" class="k">AGENT  ·  claude -p  ·  skill regulatory-watch</text>
+
+  <!-- checking -->
+  <rect class="stage" x="80" y="120" width="300" height="58"/>
+  <text x="94" y="140" class="h">1  Checking</text>
+  <text x="94" y="156" class="t">diff_source() on every watched URL</text>
+  <text x="94" y="170" class="m">fetch → text or links → hash → compare to last snapshot</text>
+
+  <!-- external: regulatory pages -->
+  <rect class="ext" x="80" y="196" width="300" height="34"/>
+  <text x="230" y="217" text-anchor="middle" class="m">Fed SR letters · EUR-Lex · EIOPA  (public pages)</text>
+  <path class="thin" d="M230 196 V178"/>
+
+  <!-- judging -->
+  <rect class="stage" x="80" y="250" width="300" height="86"/>
+  <text x="94" y="270" class="h">2  Judging</text>
+  <text x="94" y="286" class="t">the agent reads the diff</text>
+  <text x="94" y="304" class="m">first sighting → <tspan class="t">baseline</tspan>     unchanged → <tspan class="t">no_change</tspan></text>
+  <text x="94" y="320" class="m">not material → <tspan class="warn">noise</tspan>  (reason + raw diff kept)</text>
+  <path class="line" d="M230 178 V250"/>
+
+  <!-- material arrow to screening -->
+  <path class="line" d="M380 293 H460"/>
+  <text x="420" y="286" text-anchor="middle" class="m">material</text>
+
+  <!-- screening -->
+  <rect class="stage" x="460" y="120" width="320" height="100"/>
+  <text x="474" y="140" class="h">3  Screening</text>
+  <text x="474" y="156" class="t">every company in the CRM, in this order:</text>
+  <text x="474" y="172" class="m">CEO exclusion → segment → 4 ICP gates → regulation flag</text>
+  <text x="474" y="188" class="m">→ <tspan class="ok">affected</tspan> / not affected, one reason each</text>
+  <text x="474" y="206" class="m">a <tspan class="t">score</tspan> audit record per affected FS account</text>
+  <path class="line" d="M460 293 Q470 293 470 280 V220"/>
+
+  <!-- external: HubSpot -->
+  <rect class="ext" x="600" y="34" width="180" height="42"/>
+  <text x="690" y="52" text-anchor="middle" class="h">HubSpot</text>
+  <text x="690" y="67" text-anchor="middle" class="m">system of record · MCP · read-only</text>
+  <path class="thin" d="M690 76 V120"/>
+
+  <!-- writing -->
+  <rect class="stage" x="460" y="250" width="320" height="150"/>
+  <text x="474" y="270" class="h">4  Writing</text>
+  <text x="474" y="286" class="t">emit_brief() once per affected account</text>
+  <text x="490" y="308" class="m"><tspan class="t">write_audit</tspan> (create)   fails closed — no record, no brief</text>
+  <text x="490" y="326" class="m"><tspan class="t">render</tspan>   section 1 shared · section 2 from that account · one ask</text>
+  <text x="490" y="344" class="m"><tspan class="t">brief_eval</tspan>   7 checks — citations, length, hashes, audit, send</text>
+  <text x="490" y="362" class="m"><tspan class="t">handoff.json</tspan>   only on PASS · approved_at: null · send: false</text>
+  <text x="474" y="388" class="m">→ brief HTML + R-17 records</text>
+  <path class="line" d="M620 220 V250"/>
+
+  <!-- to dashboard -->
+  <path class="line" d="M430 416 V446"/>
+
+  <!-- dashboard -->
+  <rect class="box" x="140" y="446" width="580" height="60"/>
+  <text x="430" y="468" text-anchor="middle" class="h">Dashboard  ·  localhost:8787</text>
+  <text x="430" y="486" text-anchor="middle" class="m">Regulations → Checks → one Check (verdict · briefs · companies screened) → Brief   ·   Audit</text>
+  <text x="430" y="500" text-anchor="middle" class="m">live phase while running · noise verdicts stay visible with their diff</text>
+  <path class="line" d="M430 506 V536"/>
+
+  <!-- human -->
+  <rect class="box" x="230" y="536" width="400" height="48"/>
+  <text x="430" y="556" text-anchor="middle" class="h">Named human</text>
+  <text x="430" y="573" text-anchor="middle" class="m"><tspan class="ok">Approve</tspan> — the brief’s named approver only    ·    <tspan class="warn">Kill</tspan> — CEO / CRO only    ·    nothing is sent</text>
+</svg>
